@@ -1,0 +1,318 @@
+import type {
+  Course,
+  Lecturer,
+  Room,
+  Schedule,
+  ScheduleEntry,
+  DashboardStats,
+  OptimizationProgress,
+} from './types'
+
+export const mockLecturers: Lecturer[] = [
+  {
+    id: 'lec-1',
+    name: 'Dr. Sarah Chen',
+    email: 'sarah.chen@university.edu',
+    department: 'Computer Science',
+    maxHoursPerWeek: 20,
+  },
+  {
+    id: 'lec-2',
+    name: 'Prof. Michael Roberts',
+    email: 'm.roberts@university.edu',
+    department: 'Computer Science',
+    maxHoursPerWeek: 16,
+  },
+  {
+    id: 'lec-3',
+    name: 'Dr. Emily Watson',
+    email: 'e.watson@university.edu',
+    department: 'Mathematics',
+    maxHoursPerWeek: 18,
+  },
+  {
+    id: 'lec-4',
+    name: 'Prof. James Liu',
+    email: 'j.liu@university.edu',
+    department: 'Physics',
+    maxHoursPerWeek: 14,
+  },
+  {
+    id: 'lec-5',
+    name: 'Dr. Amanda Foster',
+    email: 'a.foster@university.edu',
+    department: 'Engineering',
+    maxHoursPerWeek: 20,
+  },
+]
+
+export const mockRooms: Room[] = [
+  {
+    id: 'room-1',
+    name: 'LT-101',
+    building: 'Science Building',
+    capacity: 150,
+    type: 'lecture',
+    equipment: ['projector', 'microphone', 'whiteboard'],
+  },
+  {
+    id: 'room-2',
+    name: 'LT-102',
+    building: 'Science Building',
+    capacity: 100,
+    type: 'lecture',
+    equipment: ['projector', 'whiteboard'],
+  },
+  {
+    id: 'room-3',
+    name: 'Lab-A1',
+    building: 'Engineering Block',
+    capacity: 40,
+    type: 'lab',
+    equipment: ['computers', 'projector', 'network'],
+  },
+  {
+    id: 'room-4',
+    name: 'Lab-A2',
+    building: 'Engineering Block',
+    capacity: 35,
+    type: 'lab',
+    equipment: ['computers', 'projector', 'network'],
+  },
+  {
+    id: 'room-5',
+    name: 'SR-201',
+    building: 'Arts Building',
+    capacity: 30,
+    type: 'seminar',
+    equipment: ['projector', 'whiteboard', 'video conferencing'],
+  },
+  {
+    id: 'room-6',
+    name: 'SR-202',
+    building: 'Arts Building',
+    capacity: 25,
+    type: 'seminar',
+    equipment: ['projector', 'whiteboard'],
+  },
+]
+
+export const mockCourses: Course[] = [
+  {
+    id: 'course-1',
+    code: 'CS101',
+    name: 'Introduction to Programming',
+    credits: 4,
+    department: 'Computer Science',
+    requiredSessions: 3,
+    sessionDuration: 60,
+    lecturerId: 'lec-1',
+  },
+  {
+    id: 'course-2',
+    code: 'CS201',
+    name: 'Data Structures',
+    credits: 4,
+    department: 'Computer Science',
+    requiredSessions: 3,
+    sessionDuration: 60,
+    lecturerId: 'lec-1',
+  },
+  {
+    id: 'course-3',
+    code: 'CS301',
+    name: 'Algorithms',
+    credits: 3,
+    department: 'Computer Science',
+    requiredSessions: 2,
+    sessionDuration: 90,
+    lecturerId: 'lec-2',
+  },
+  {
+    id: 'course-4',
+    code: 'MATH101',
+    name: 'Calculus I',
+    credits: 4,
+    department: 'Mathematics',
+    requiredSessions: 3,
+    sessionDuration: 60,
+    lecturerId: 'lec-3',
+  },
+  {
+    id: 'course-5',
+    code: 'MATH201',
+    name: 'Linear Algebra',
+    credits: 3,
+    department: 'Mathematics',
+    requiredSessions: 2,
+    sessionDuration: 90,
+    lecturerId: 'lec-3',
+  },
+  {
+    id: 'course-6',
+    code: 'PHY101',
+    name: 'Physics I',
+    credits: 4,
+    department: 'Physics',
+    requiredSessions: 3,
+    sessionDuration: 60,
+    lecturerId: 'lec-4',
+  },
+  {
+    id: 'course-7',
+    code: 'ENG101',
+    name: 'Engineering Fundamentals',
+    credits: 3,
+    department: 'Engineering',
+    requiredSessions: 2,
+    sessionDuration: 90,
+    lecturerId: 'lec-5',
+  },
+  {
+    id: 'course-8',
+    code: 'CS401',
+    name: 'Machine Learning',
+    credits: 4,
+    department: 'Computer Science',
+    requiredSessions: 2,
+    sessionDuration: 90,
+    lecturerId: 'lec-2',
+  },
+]
+
+export const mockScheduleEntries: ScheduleEntry[] = [
+  {
+    id: 'entry-1',
+    courseId: 'course-1',
+    lecturerId: 'lec-1',
+    roomId: 'room-1',
+    timeSlot: { day: 'Monday', startTime: '09:00', endTime: '10:00' },
+  },
+  {
+    id: 'entry-2',
+    courseId: 'course-1',
+    lecturerId: 'lec-1',
+    roomId: 'room-3',
+    timeSlot: { day: 'Wednesday', startTime: '09:00', endTime: '10:00' },
+  },
+  {
+    id: 'entry-3',
+    courseId: 'course-2',
+    lecturerId: 'lec-1',
+    roomId: 'room-2',
+    timeSlot: { day: 'Monday', startTime: '11:00', endTime: '12:00' },
+  },
+  {
+    id: 'entry-4',
+    courseId: 'course-3',
+    lecturerId: 'lec-2',
+    roomId: 'room-1',
+    timeSlot: { day: 'Tuesday', startTime: '10:00', endTime: '11:30' },
+  },
+  {
+    id: 'entry-5',
+    courseId: 'course-4',
+    lecturerId: 'lec-3',
+    roomId: 'room-1',
+    timeSlot: { day: 'Monday', startTime: '14:00', endTime: '15:00' },
+  },
+  {
+    id: 'entry-6',
+    courseId: 'course-5',
+    lecturerId: 'lec-3',
+    roomId: 'room-5',
+    timeSlot: { day: 'Thursday', startTime: '09:00', endTime: '10:30' },
+  },
+  {
+    id: 'entry-7',
+    courseId: 'course-6',
+    lecturerId: 'lec-4',
+    roomId: 'room-2',
+    timeSlot: { day: 'Tuesday', startTime: '14:00', endTime: '15:00' },
+  },
+  {
+    id: 'entry-8',
+    courseId: 'course-7',
+    lecturerId: 'lec-5',
+    roomId: 'room-3',
+    timeSlot: { day: 'Friday', startTime: '10:00', endTime: '11:30' },
+  },
+  {
+    id: 'entry-9',
+    courseId: 'course-8',
+    lecturerId: 'lec-2',
+    roomId: 'room-3',
+    timeSlot: { day: 'Wednesday', startTime: '14:00', endTime: '15:30' },
+  },
+  {
+    id: 'entry-10',
+    courseId: 'course-4',
+    lecturerId: 'lec-3',
+    roomId: 'room-1',
+    timeSlot: { day: 'Wednesday', startTime: '11:00', endTime: '12:00' },
+  },
+]
+
+export const mockSchedule: Schedule = {
+  id: 'schedule-1',
+  name: 'Fall 2025 Schedule',
+  semester: 'Fall',
+  year: 2025,
+  entries: mockScheduleEntries,
+  fitness: 0.87,
+  createdAt: new Date('2025-01-15'),
+  updatedAt: new Date('2025-01-28'),
+}
+
+export const mockDashboardStats: DashboardStats = {
+  totalCourses: mockCourses.length,
+  totalLecturers: mockLecturers.length,
+  totalRooms: mockRooms.length,
+  scheduledSessions: mockScheduleEntries.length,
+  conflictCount: 2,
+  utilizationRate: 0.73,
+  lastOptimizationFitness: 0.87,
+}
+
+export const mockOptimizationProgress: OptimizationProgress = {
+  currentGeneration: 0,
+  totalGenerations: 500,
+  bestFitness: 0,
+  averageFitness: 0,
+  hardConstraintViolations: 0,
+  softConstraintViolations: 0,
+  isRunning: false,
+}
+
+// Fitness history for charts
+export const mockFitnessHistory = [
+  { generation: 0, best: 0.42, average: 0.28 },
+  { generation: 50, best: 0.55, average: 0.41 },
+  { generation: 100, best: 0.64, average: 0.52 },
+  { generation: 150, best: 0.71, average: 0.59 },
+  { generation: 200, best: 0.76, average: 0.65 },
+  { generation: 250, best: 0.8, average: 0.69 },
+  { generation: 300, best: 0.83, average: 0.73 },
+  { generation: 350, best: 0.85, average: 0.76 },
+  { generation: 400, best: 0.86, average: 0.78 },
+  { generation: 450, best: 0.87, average: 0.79 },
+  { generation: 500, best: 0.87, average: 0.8 },
+]
+
+// Room utilization data for charts
+export const mockRoomUtilization = [
+  { name: 'LT-101', utilization: 75, capacity: 150 },
+  { name: 'LT-102', utilization: 68, capacity: 100 },
+  { name: 'Lab-A1', utilization: 82, capacity: 40 },
+  { name: 'Lab-A2', utilization: 71, capacity: 35 },
+  { name: 'SR-201', utilization: 55, capacity: 30 },
+  { name: 'SR-202', utilization: 63, capacity: 25 },
+]
+// Weekly distribution data
+export const mockWeeklyDistribution = [
+  { day: 'Mon', sessions: 12, hours: 14 },
+  { day: 'Tue', sessions: 10, hours: 12 },
+  { day: 'Wed', sessions: 11, hours: 13 },
+  { day: 'Thu', sessions: 9, hours: 11 },
+  { day: 'Fri', sessions: 8, hours: 10 },
+]
