@@ -1,3 +1,5 @@
+'use client'
+
 import {
   LineChart,
   Line,
@@ -27,33 +29,33 @@ export function TabuChart({ data }: TabuChartProps) {
         <div className="h-[200px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={sampledData}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
               <XAxis
                 dataKey="iteration"
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
-                tickLine={{ stroke: 'hsl(var(--border))' }}
-                axisLine={{ stroke: 'hsl(var(--border))' }}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 11 }}
+                tickLine={{ stroke: 'var(--color-border)' }}
+                axisLine={{ stroke: 'var(--color-border)' }}
                 tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
               />
               <YAxis
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
-                tickLine={{ stroke: 'hsl(var(--border))' }}
-                axisLine={{ stroke: 'hsl(var(--border))' }}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 11 }}
+                tickLine={{ stroke: 'var(--color-border)' }}
+                axisLine={{ stroke: 'var(--color-border)' }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
+                  backgroundColor: 'var(--color-card)',
+                  border: '1px solid var(--color-border)',
                   borderRadius: '8px',
                 }}
-                labelStyle={{ color: 'hsl(var(--foreground))' }}
+                labelStyle={{ color: 'var(--color-foreground)' }}
                 formatter={(value: number) => [value, 'Tabu List Size']}
                 labelFormatter={(label) => `Iteration: ${label}`}
               />
               <Line
                 type="stepAfter"
                 dataKey="tabuListSize"
-                stroke="hsl(var(--chart-5))"
+                stroke="var(--color-chart-5)"
                 strokeWidth={2}
                 dot={false}
               />

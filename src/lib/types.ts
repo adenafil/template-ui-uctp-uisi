@@ -72,10 +72,10 @@ export interface OptimizationParams {
 }
 
 export interface OptimizationProgress {
-  currentGeneration: number
-  totalGenerations: number
-  bestFitness: number
-  averageFitness: number
+  currentIteration: number
+  totalIterations: number
+  bestCost: number
+  currentCost: number
   hardConstraintViolations: number
   softConstraintViolations: number
   isRunning: boolean

@@ -17,7 +17,7 @@ export function Provider({
 }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme='dark' >{children}</ThemeProvider>
+      <ThemeProvider defaultTheme='light' >{children}</ThemeProvider>
     </QueryClientProvider>
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -30,28 +30,38 @@ export function SACostChart({ data, title = 'Cost Convergence' }: SACostChartPro
       <CardContent>
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={sampledData}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+            <AreaChart data={sampledData}>
+              <defs>
+                <linearGradient id="fillCurrentCost" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-chart-2)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="var(--color-chart-2)" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="fillBestCost" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-chart-1)" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="var(--color-chart-1)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
               <XAxis
                 dataKey="iteration"
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
-                tickLine={{ stroke: 'hsl(var(--border))' }}
-                axisLine={{ stroke: 'hsl(var(--border))' }}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 11 }}
+                tickLine={{ stroke: 'var(--color-border)' }}
+                axisLine={{ stroke: 'var(--color-border)' }}
                 tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
               />
               <YAxis
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
-                tickLine={{ stroke: 'hsl(var(--border))' }}
-                axisLine={{ stroke: 'hsl(var(--border))' }}
-                tickFormatter={(value) => value >= 1000 ? `${(value / 1000).toFixed(0)}k` : value}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 11 }}
+                tickLine={{ stroke: 'var(--color-border)' }}
+                axisLine={{ stroke: 'var(--color-border)' }}
+                tickFormatter={(value) => value >= 1000 ? `${(value / 1000).toFixed(0)}k` : value.toFixed(0)}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
+                  backgroundColor: 'var(--color-card)',
+                  border: '1px solid var(--color-border)',
                   borderRadius: '8px',
                 }}
-                labelStyle={{ color: 'hsl(var(--foreground))' }}
+                labelStyle={{ color: 'var(--color-foreground)' }}
                 formatter={(value: number, name: string) => [
                   value.toFixed(0),
                   name === 'currentCost' ? 'Current Cost' : 'Best Cost'
@@ -62,23 +72,25 @@ export function SACostChart({ data, title = 'Cost Convergence' }: SACostChartPro
                 wrapperStyle={{ paddingTop: '10px' }}
                 formatter={(value) => value === 'currentCost' ? 'Current Cost' : 'Best Cost'}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="currentCost"
-                stroke="hsl(var(--chart-2))"
+                stroke="var(--color-chart-2)"
+                fill="url(#fillCurrentCost)"
                 strokeWidth={1.5}
                 dot={false}
                 name="currentCost"
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="bestCost"
-                stroke="hsl(var(--chart-1))"
+                stroke="var(--color-chart-1)"
+                fill="url(#fillBestCost)"
                 strokeWidth={2}
                 dot={false}
                 name="bestCost"
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </CardContent>

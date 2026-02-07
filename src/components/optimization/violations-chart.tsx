@@ -30,26 +30,36 @@ export function ViolationsChart({ data }: ViolationsChartProps) {
         <div className="h-[200px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={sampledData}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+              <defs>
+                <linearGradient id="fillHard" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-destructive)" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="var(--color-destructive)" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="fillSoft" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-chart-3)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="var(--color-chart-3)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
               <XAxis
                 dataKey="iteration"
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
-                tickLine={{ stroke: 'hsl(var(--border))' }}
-                axisLine={{ stroke: 'hsl(var(--border))' }}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 11 }}
+                tickLine={{ stroke: 'var(--color-border)' }}
+                axisLine={{ stroke: 'var(--color-border)' }}
                 tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
               />
               <YAxis
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
-                tickLine={{ stroke: 'hsl(var(--border))' }}
-                axisLine={{ stroke: 'hsl(var(--border))' }}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 11 }}
+                tickLine={{ stroke: 'var(--color-border)' }}
+                axisLine={{ stroke: 'var(--color-border)' }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
+                  backgroundColor: 'var(--color-card)',
+                  border: '1px solid var(--color-border)',
                   borderRadius: '8px',
                 }}
-                labelStyle={{ color: 'hsl(var(--foreground))' }}
+                labelStyle={{ color: 'var(--color-foreground)' }}
                 labelFormatter={(label) => `Iteration: ${label}`}
               />
               <Legend wrapperStyle={{ paddingTop: '10px' }} />
@@ -57,21 +67,17 @@ export function ViolationsChart({ data }: ViolationsChartProps) {
                 type="monotone"
                 dataKey="hardViolations"
                 name="Hard Violations"
-                stroke="hsl(var(--destructive))"
-                fill="hsl(var(--destructive))"
-                fillOpacity={0.3}
+                stroke="var(--color-destructive)"
+                fill="url(#fillHard)"
                 strokeWidth={2}
-                stackId="1"
               />
               <Area
                 type="monotone"
                 dataKey="softViolations"
                 name="Soft Violations"
-                stroke="hsl(var(--chart-3))"
-                fill="hsl(var(--chart-3))"
-                fillOpacity={0.3}
+                stroke="var(--color-chart-3)"
+                fill="url(#fillSoft)"
                 strokeWidth={2}
-                stackId="2"
               />
             </AreaChart>
           </ResponsiveContainer>

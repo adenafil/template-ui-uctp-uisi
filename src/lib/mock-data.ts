@@ -275,28 +275,38 @@ export const mockDashboardStats: DashboardStats = {
 }
 
 export const mockOptimizationProgress: OptimizationProgress = {
-  currentGeneration: 0,
-  totalGenerations: 500,
-  bestFitness: 0,
-  averageFitness: 0,
+  currentIteration: 0,
+  totalIterations: 20000,
+  bestCost: 145.5,
+  currentCost: 145.5,
   hardConstraintViolations: 0,
-  softConstraintViolations: 0,
+  softConstraintViolations: 8,
   isRunning: false,
 }
 
-// Fitness history for charts
+// SA Optimization history for charts (Simulated Annealing progress)
 export const mockFitnessHistory = [
-  { generation: 0, best: 0.42, average: 0.28 },
-  { generation: 50, best: 0.55, average: 0.41 },
-  { generation: 100, best: 0.64, average: 0.52 },
-  { generation: 150, best: 0.71, average: 0.59 },
-  { generation: 200, best: 0.76, average: 0.65 },
-  { generation: 250, best: 0.8, average: 0.69 },
-  { generation: 300, best: 0.83, average: 0.73 },
-  { generation: 350, best: 0.85, average: 0.76 },
-  { generation: 400, best: 0.86, average: 0.78 },
-  { generation: 450, best: 0.87, average: 0.79 },
-  { generation: 500, best: 0.87, average: 0.8 },
+  { iteration: 0, currentCost: 145.5, bestCost: 145.5 },
+  { iteration: 1000, currentCost: 98.2, bestCost: 92.8 },
+  { iteration: 2000, currentCost: 76.4, bestCost: 71.2 },
+  { iteration: 3000, currentCost: 62.1, bestCost: 55.7 },
+  { iteration: 4000, currentCost: 51.3, bestCost: 45.2 },
+  { iteration: 5000, currentCost: 44.8, bestCost: 38.6 },
+  { iteration: 6000, currentCost: 39.2, bestCost: 33.4 },
+  { iteration: 7000, currentCost: 35.7, bestCost: 30.1 },
+  { iteration: 8000, currentCost: 32.4, bestCost: 28.5 },
+  { iteration: 9000, currentCost: 30.8, bestCost: 27.8 },
+  { iteration: 10000, currentCost: 29.5, bestCost: 27.3 },
+  { iteration: 11000, currentCost: 28.7, bestCost: 27.0 },
+  { iteration: 12000, currentCost: 28.2, bestCost: 26.9 },
+  { iteration: 13000, currentCost: 27.9, bestCost: 26.8 },
+  { iteration: 14000, currentCost: 27.8, bestCost: 26.8 },
+  { iteration: 15000, currentCost: 27.7, bestCost: 26.8 },
+  { iteration: 16000, currentCost: 27.8, bestCost: 26.8 },
+  { iteration: 17000, currentCost: 27.6, bestCost: 26.8 },
+  { iteration: 18000, currentCost: 27.7, bestCost: 26.8 },
+  { iteration: 19000, currentCost: 27.6, bestCost: 26.8 },
+  { iteration: 20000, currentCost: 26.9, bestCost: 26.8 },
 ]
 
 // Room utilization data for charts

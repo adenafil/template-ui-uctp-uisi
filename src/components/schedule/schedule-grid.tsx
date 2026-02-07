@@ -23,9 +23,10 @@ import { DAYS, TIME_SLOTS } from '@/lib/schedule-types'
 
 interface ScheduleGridProps {
   initialData: ScheduleData
+  zoomLevel?: number
 }
 
-export function ScheduleGrid({ initialData }: ScheduleGridProps) {
+export function ScheduleGrid({ initialData, zoomLevel = 1 }: ScheduleGridProps) {
   const [scheduleData, setScheduleData] = useState<ScheduleData>(initialData)
   const [currentDayIndex, setCurrentDayIndex] = useState(0)
   const [editingEntry, setEditingEntry] = useState<ScheduleEntry | null>(null)
@@ -202,8 +203,8 @@ export function ScheduleGrid({ initialData }: ScheduleGridProps) {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <Card className="bg-card">
-        <CardHeader className="flex flex-row items-center justify-between border-b">
+      <Card className="bg-card" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }}>
+        <CardHeader className="flex flex-row items-center justify-between ">
           <CardTitle className="text-xl">{currentDay}</CardTitle>
           <div className="flex items-center gap-2">
             <Button
@@ -224,14 +225,14 @@ export function ScheduleGrid({ initialData }: ScheduleGridProps) {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent className="p-0 overflow-auto max-h-[calc(100vh-140px)]">
           <div className="overflow-x-auto">
             <div className="min-w-[1200px]">
               {/* Header row with rooms */}
               <div
-                className="grid border-b"
+                className="grid border-b border-t "
                 style={{
-                  gridTemplateColumns: `100px repeat(${rooms.length}, minmax(140px, 1fr))`,
+                  gridTemplateColumns: `100px repeat(${rooms.length }, minmax(140px, 1fr))`,
                 }}
               >
                 <div className="sticky left-0 bg-card p-3 text-sm font-medium text-muted-foreground">
@@ -252,7 +253,7 @@ export function ScheduleGrid({ initialData }: ScheduleGridProps) {
               {TIME_SLOTS.map((timeSlot, timeIndex) => (
                 <div
                   key={timeSlot.label}
-                  className="grid border-b"
+                  className={`grid border-b ${timeIndex === 0 ? 'border-t' : ''}`}
                   style={{
                     gridTemplateColumns: `100px repeat(${rooms.length}, minmax(140px, 1fr))`,
                   }}
@@ -323,7 +324,7 @@ export function ScheduleGrid({ initialData }: ScheduleGridProps) {
       <DragOverlay>
         {activeEntry && (
           <div
-            className="w-[140px] opacity-80"
+            className="w-[140px] opacity-80 bg-red-600"
             style={{
               height: `calc(${calculateRowSpan(activeEntry.timeSlot.startTime, activeEntry.timeSlot.endTime) * 70}px - 8px)`,
             }}

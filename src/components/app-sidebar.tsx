@@ -8,6 +8,7 @@ import {
   Activity,
   Sparkles,
   GraduationCap,
+  LogOut,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -22,13 +23,19 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { Link } from '@tanstack/react-router'
+import { Link, useLocation, useNavigate } from '@tanstack/react-router'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 const mainNavItems = [
   {
     title: 'Dashboard',
     icon: LayoutDashboard,
-    href: '/',
+    href: '/dashboard',
   },
   {
     title: 'Schedule',
@@ -74,7 +81,13 @@ const systemItems = [
 ]
 
 export function AppSidebar() {
-    const pathname = '/'
+  const location = useLocation()
+  const pathname = location.pathname
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    navigate({ to: '/' })
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -165,17 +178,27 @@ export function AppSidebar() {
       <SidebarFooter className="border-t border-sidebar-border">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" className="cursor-default">
-              <div className="flex size-8 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs font-medium">
-                AD
-              </div>
-              <div className="flex flex-col gap-0.5 leading-none">
-                <span className="text-sm font-medium">Admin User</span>
-                <span className="text-xs text-muted-foreground">
-                  admin@university.edu
-                </span>
-              </div>
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton size="lg">
+                  <div className="flex size-8 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs font-medium">
+                    AD
+                  </div>
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="text-sm font-medium">Admin User</span>
+                    <span className="text-xs text-muted-foreground">
+                      admin@university.edu
+                    </span>
+                  </div>
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-[--radix-dropdown-menu-trigger-width]">
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

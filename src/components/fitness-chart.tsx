@@ -17,31 +17,34 @@ import {
 
 interface FitnessChartProps {
   data: Array<{
-    generation: number
-    best: number
-    average: number
+    iteration: number
+    currentCost: number
+    bestCost: number
   }>
 }
 
 const chartConfig = {
-  best: {
-    label: 'Best Fitness',
+  bestCost: {
+    label: 'Best Cost',
     color: 'var(--color-chart-1)',
   },
-  average: {
-    label: 'Average Fitness',
+  currentCost: {
+    label: 'Current Cost',
     color: 'var(--color-chart-2)',
   },
 }
 
 export function FitnessChart({ data }: FitnessChartProps) {
+  const lastData = data[data.length - 1]
+  const bestCost = lastData?.bestCost ?? 0
+  
   return (
     <Card className="bg-card">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Optimization Progress</span>
           <span className="text-sm font-normal text-muted-foreground">
-            Best: {Math.round((data[data.length - 1]?.best || 0) * 100)}%
+            Best Cost: {bestCost.toFixed(2)}
           </span>
         </CardTitle>
       </CardHeader>
@@ -65,7 +68,7 @@ export function FitnessChart({ data }: FitnessChartProps) {
                     stopOpacity={0}
                   />
                 </linearGradient>
-                <linearGradient id="fillAverage" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="fillCurrent" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
                     stopColor="var(--color-chart-2)"
@@ -84,38 +87,37 @@ export function FitnessChart({ data }: FitnessChartProps) {
                 vertical={false}
               />
               <XAxis
-                dataKey="generation"
+                dataKey="iteration"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
                 tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}
-                tickFormatter={(value) => `Gen ${value}`}
+                tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
                 tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}
-                tickFormatter={(value) => `${Math.round(value * 100)}%`}
-                domain={[0, 1]}
+                tickFormatter={(value) => value >= 1000 ? `${(value / 1000).toFixed(0)}k` : value.toFixed(0)}
               />
               <ChartTooltip
                 content={
                   <ChartTooltipContent
-                    labelFormatter={(value) => `Generation ${value}`}
+                    labelFormatter={(value) => `Iteration: ${value}`}
                   />
                 }
               />
               <Area
                 type="monotone"
-                dataKey="average"
+                dataKey="currentCost"
                 stroke="var(--color-chart-2)"
                 strokeWidth={2}
-                fill="url(#fillAverage)"
+                fill="url(#fillCurrent)"
               />
               <Area
                 type="monotone"
-                dataKey="best"
+                dataKey="bestCost"
                 stroke="var(--color-chart-1)"
                 strokeWidth={2}
                 fill="url(#fillBest)"
