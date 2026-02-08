@@ -1,4 +1,48 @@
+// ==================== DATA STRUCTURE MATCHING DATA_UISI.XLSX ====================
+
+// Sheet: ruangan
+export interface Room {
+  id: string
+  code: string
+  name: string
+  type: 'theory' | 'lab_multimedia'
+  capacity: number
+}
+
+// Sheet: dosen
+export interface Lecturer {
+  id: string
+  prodi: string
+  code: string
+  name: string
+  preferredTime: string
+  researchDay: string
+  transitTime: number
+  maxDailyPeriods: number
+  preferredRoom: string
+}
+
+// Sheet: kebutuhan_kelas
 export interface Course {
+  id: string
+  prodi: string
+  kelas: string
+  kodeMatakuliah: string
+  mataKuliah: string
+  sks: number
+  jenis: 'wajib' | 'pilihan'
+  peserta: number
+  kodeDosen1: string
+  kodeDosen2: string
+  kodeDosenProdiLain1: string
+  kodeDosenProdiLain2: string
+  classType: 'pagi' | 'sore'
+  shouldOnTheLab: boolean
+  rooms: string
+}
+
+// ==================== LEGACY INTERFACES (for compatibility) ====================
+export interface CourseLegacy {
   id: string
   code: string
   name: string
@@ -10,7 +54,7 @@ export interface Course {
   lecturerId: string
 }
 
-export interface Lecturer {
+export interface LecturerLegacy {
   id: string
   name: string
   email: string
@@ -20,12 +64,12 @@ export interface Lecturer {
   unavailableSlots?: TimeSlot[]
 }
 
-export interface Room {
+export interface RoomLegacy {
   id: string
   name: string
   building: string
   capacity: number
-  type: 'lecture' | 'lab' | 'seminar'
+  type: 'theory' | 'lab_multimedia'
   equipment: string[]
 }
 
@@ -60,6 +104,42 @@ export interface Schedule {
   fitness: number
   createdAt: Date
   updatedAt: Date
+}
+
+// ==================== FORM STATE TYPES ====================
+export interface RoomFormData {
+  code: string
+  name: string
+  type: 'theory' | 'lab_multimedia'
+  capacity: number
+}
+
+export interface LecturerFormData {
+  prodi: string
+  code: string
+  name: string
+  preferredTime: string
+  researchDay: string
+  transitTime: number
+  maxDailyPeriods: number
+  preferredRoom: string
+}
+
+export interface CourseFormData {
+  prodi: string
+  kelas: string
+  kodeMatakuliah: string
+  mataKuliah: string
+  sks: number
+  jenis: 'wajib' | 'pilihan'
+  peserta: number
+  kodeDosen1: string
+  kodeDosen2: string
+  kodeDosenProdiLain1: string
+  kodeDosenProdiLain2: string
+  classType: 'pagi' | 'sore'
+  shouldOnTheLab: boolean
+  rooms: string
 }
 
 export interface OptimizationParams {

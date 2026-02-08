@@ -76,7 +76,7 @@ export function ScheduleEditSheet({
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex flex-col gap-6 py-6">
+        <div className="flex flex-col gap-4 mx-3 -mt-4">
           {/* Course Info Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -180,7 +180,7 @@ export function ScheduleEditSheet({
                 value={formData.timeSlot.day}
                 onValueChange={(value) => updateTimeSlot('day', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className='w-full'>
                   <SelectValue placeholder="Pilih hari" />
                 </SelectTrigger>
                 <SelectContent>
@@ -200,7 +200,7 @@ export function ScheduleEditSheet({
                   value={formData.timeSlot.startTime}
                   onValueChange={(value) => updateTimeSlot('startTime', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className='w-full'>
                     <SelectValue placeholder="Pilih jam mulai" />
                   </SelectTrigger>
                   <SelectContent>
@@ -218,7 +218,7 @@ export function ScheduleEditSheet({
                   value={formData.timeSlot.endTime}
                   onValueChange={(value) => updateTimeSlot('endTime', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className='w-full'>
                     <SelectValue placeholder="Pilih jam selesai" />
                   </SelectTrigger>
                   <SelectContent>
@@ -240,7 +240,7 @@ export function ScheduleEditSheet({
                   setFormData({ ...formData, room: value })
                 }
               >
-                <SelectTrigger>
+                <SelectTrigger className='w-full'>
                   <SelectValue placeholder="Pilih ruangan" />
                 </SelectTrigger>
                 <SelectContent>
