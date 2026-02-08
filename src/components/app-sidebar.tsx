@@ -9,6 +9,7 @@ import {
   Sparkles,
   GraduationCap,
   LogOut,
+  ChevronRight,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -21,6 +22,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -30,6 +34,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 
 const mainNavItems = [
   {
@@ -41,6 +50,10 @@ const mainNavItems = [
     title: 'Schedule',
     icon: Calendar,
     href: '/schedule',
+    items: [
+      { title: 'v1 (complex)', href: '/schedule' },
+      { title: 'v2 (simple)', href: '/schedule-simple' },
+    ],
   },
   {
     title: 'Optimization',
@@ -115,20 +128,52 @@ export function AppSidebar() {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                    tooltip={item.title}
+              {mainNavItems.map((item) =>
+                item.items ? (
+                  <Collapsible
+                    key={item.title}
+                    defaultOpen={pathname.startsWith('/schedule')}
+                    className="group/collapsible"
                   >
-                    <Link to={item.href}>
-                      <item.icon className="size-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton tooltip={item.title}>
+                          <item.icon className="size-4" />
+                          <span>{item.title}</span>
+                          <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {item.items.map((subItem) => (
+                            <SidebarMenuSubItem key={subItem.href}>
+                              <SidebarMenuSubButton
+                                asChild
+                                isActive={pathname === subItem.href}
+                              >
+                                <Link to={subItem.href}>{subItem.title}</Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+                ) : (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === item.href}
+                      tooltip={item.title}
+                    >
+                      <Link to={item.href}>
+                        <item.icon className="size-4" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ),
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimetableRouteImport } from './routes/timetable'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ScheduleSimpleRouteImport } from './routes/schedule-simple'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as RoomsRouteImport } from './routes/rooms'
 import { Route as OptimizationRouteImport } from './routes/optimization'
@@ -28,6 +29,11 @@ const TimetableRoute = TimetableRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScheduleSimpleRoute = ScheduleSimpleRouteImport.update({
+  id: '/schedule-simple',
+  path: '/schedule-simple',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScheduleRoute = ScheduleRouteImport.update({
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/optimization': typeof OptimizationRoute
   '/rooms': typeof RoomsRoute
   '/schedule': typeof ScheduleRoute
+  '/schedule-simple': typeof ScheduleSimpleRoute
   '/settings': typeof SettingsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/optimization': typeof OptimizationRoute
   '/rooms': typeof RoomsRoute
   '/schedule': typeof ScheduleRoute
+  '/schedule-simple': typeof ScheduleSimpleRoute
   '/settings': typeof SettingsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/optimization': typeof OptimizationRoute
   '/rooms': typeof RoomsRoute
   '/schedule': typeof ScheduleRoute
+  '/schedule-simple': typeof ScheduleSimpleRoute
   '/settings': typeof SettingsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/optimization'
     | '/rooms'
     | '/schedule'
+    | '/schedule-simple'
     | '/settings'
     | '/timetable'
   fileRoutesByTo: FileRoutesByTo
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/optimization'
     | '/rooms'
     | '/schedule'
+    | '/schedule-simple'
     | '/settings'
     | '/timetable'
   id:
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/optimization'
     | '/rooms'
     | '/schedule'
+    | '/schedule-simple'
     | '/settings'
     | '/timetable'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   OptimizationRoute: typeof OptimizationRoute
   RoomsRoute: typeof RoomsRoute
   ScheduleRoute: typeof ScheduleRoute
+  ScheduleSimpleRoute: typeof ScheduleSimpleRoute
   SettingsRoute: typeof SettingsRoute
   TimetableRoute: typeof TimetableRoute
 }
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/schedule-simple': {
+      id: '/schedule-simple'
+      path: '/schedule-simple'
+      fullPath: '/schedule-simple'
+      preLoaderRoute: typeof ScheduleSimpleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/schedule': {
@@ -244,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   OptimizationRoute: OptimizationRoute,
   RoomsRoute: RoomsRoute,
   ScheduleRoute: ScheduleRoute,
+  ScheduleSimpleRoute: ScheduleSimpleRoute,
   SettingsRoute: SettingsRoute,
   TimetableRoute: TimetableRoute,
 }

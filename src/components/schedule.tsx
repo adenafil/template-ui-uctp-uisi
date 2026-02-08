@@ -139,20 +139,6 @@ export default function SchedulePage() {
                       )}
                     </div>
                     <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1.5">
-                          <span className="w-3 h-3 rounded bg-primary/20 border border-primary/30" />
-                          Available
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <span className="w-3 h-3 rounded bg-chart-1/20 border border-chart-1/30" />
-                          Scheduled
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <span className="w-3 h-3 rounded bg-destructive/20 border border-destructive/30" />
-                          Conflict
-                        </span>
-                      </div>
                       <Button
                         variant="outline"
                         size="sm"
