@@ -1,8 +1,7 @@
 'use client'
 
-import { Moon, Sun, Bell, Search } from 'lucide-react'
+import { Moon, Sun, Bell } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -12,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useTheme } from './theme-provider'
+import { CommandPalette, CommandPaletteTrigger, useCommandPalette } from './command-palette'
 
 interface DashboardHeaderProps {
   title: string
@@ -21,6 +21,7 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ title, description }: DashboardHeaderProps) {
   // @ts-ignore
   const { setTheme, theme } = useTheme()
+  const { open, setOpen } = useCommandPalette()
 
   return (
     <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -35,14 +36,8 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <div className="relative hidden md:block">
-          <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search..."
-            className="h-9 w-64 bg-muted/50 pl-9"
-          />
-        </div>
+        <CommandPaletteTrigger onClick={() => setOpen(true)} />
+        <CommandPalette open={open} onOpenChange={setOpen} />
         <Button variant="ghost" size="icon" className="size-9">
           <Bell className="size-4" />
           <span className="sr-only">Notifications</span>
