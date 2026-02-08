@@ -85,7 +85,7 @@ export function ScheduleCard({ entry, onEdit, onDelete, isDragging }: ScheduleCa
         </div>
 
         {/* Participants badge */}
-        <div className="mt-auto pt-2">
+        <div className="mt-auto pt-2 overflow-hidden">
           <Badge variant="secondary" className="text-xs">
             {entry.participants} peserta
           </Badge>

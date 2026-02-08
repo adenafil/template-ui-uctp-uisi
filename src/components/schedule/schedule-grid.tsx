@@ -19,7 +19,7 @@ import { ScheduleEditSheet } from './schedule-edit-sheet'
 import { DroppableCell } from './droppable-cell'
 import { DraggableCard } from './draggable-card'
 import type { ScheduleEntry, ScheduleData } from '@/lib/schedule-types'
-import { DAYS, TIME_SLOTS } from '@/lib/schedule-types'
+import { DAYS, TIME_SLOTS, getProdiColor } from '@/lib/schedule-types'
 
 interface ScheduleGridProps {
   initialData: ScheduleData
@@ -60,13 +60,13 @@ export function ScheduleGrid({ initialData, zoomLevel = 1 }: ScheduleGridProps) 
   }
 
   // Check if a cell is occupied by an entry that spans multiple rows
-  const isCellOccupied = (room: string, timeSlotStart: string) => {
-    return dayEntries.some((entry) => {
+  const getCellOccupant = (room: string, timeSlotStart: string): ScheduleEntry | null => {
+    return dayEntries.find((entry) => {
       if (entry.room !== room) return false
       const entryStart = entry.timeSlot.startTime
       const entryEnd = entry.timeSlot.endTime
-      return timeSlotStart >= entryStart && timeSlotStart < entryEnd
-    })
+      return timeSlotStart > entryStart && timeSlotStart < entryEnd
+    }) || null
   }
 
   // Calculate row span based on start and end time using minutes
@@ -266,14 +266,15 @@ export function ScheduleGrid({ initialData, zoomLevel = 1 }: ScheduleGridProps) 
                   {/* Room cells */}
                   {rooms.map((room) => {
                     const entry = getEntryAtPosition(room, timeSlot.start)
-                    const isOccupied = isCellOccupied(room, timeSlot.start)
+                    const cellOccupant = getCellOccupant(room, timeSlot.start)
 
                     // Skip cells that are part of a multi-row entry
-                    if (isOccupied && !entry) {
+                    if (cellOccupant && !entry) {
+                      const colors = getProdiColor(cellOccupant.prodi)
                       return (
                         <div
                           key={`${room}-${timeSlot.start}`}
-                          className="border-l"
+                          className={`relative min-h-[70px] border-l p-1 ${colors.bg}`}
                         />
                       )
                     }

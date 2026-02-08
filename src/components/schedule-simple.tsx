@@ -457,7 +457,7 @@ export function ScheduleSimple() {
                         style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }}
                       >
                       <div className="min-w-[900px]">
-                        <div className="grid grid-cols-6 gap-1">
+                        <div className="grid grid-cols-7 gap-1">
                           {/* Header */}
                           <div className="p-2 text-xs font-medium text-muted-foreground sticky left-0 bg-card z-10">
                             Jam
@@ -472,7 +472,7 @@ export function ScheduleSimple() {
                           ))}
 
                           {/* Time slots */}
-                          {TIME_SLOTS.slice(0, 12).map((slot) => (
+                          {TIME_SLOTS.map((slot) => (
                             <div key={`row-${slot.start}`} className="contents">
                               <div className="flex items-center p-2 text-xs text-muted-foreground sticky left-0 bg-card z-10 border-r">
                                 {slot.start}
@@ -482,18 +482,19 @@ export function ScheduleSimple() {
                                 const entry = entries[0] // Take first entry for this slot
                                 
                                 // Check if this cell is part of a multi-row entry from above
-                                const isOccupied = filteredSchedule.some((e) => {
+                                const cellOccupant = filteredSchedule.find((e) => {
                                   if (e.timeSlot.day !== day) return false
                                   const entryStart = e.timeSlot.startTime
                                   const entryEnd = e.timeSlot.endTime
                                   return slot.start > entryStart && slot.start < entryEnd
                                 })
 
-                                if (isOccupied) {
+                                if (cellOccupant) {
+                                  const colors = getProdiColor(cellOccupant.prodi)
                                   return (
                                     <div
                                       key={`${day}-${slot.start}`}
-                                      className="min-h-[60px] rounded-md border border-border/30 p-1 bg-muted/20"
+                                      className={`min-h-[60px] rounded-md border border-border/30 p-1 ${colors.bg}`}
                                     />
                                   )
                                 }
@@ -627,12 +628,17 @@ export function ScheduleSimple() {
                   <div className="mt-6 flex flex-wrap gap-2 border-t pt-4">
                     <span className="text-xs text-muted-foreground mr-2">Program Studi:</span>
                     {Object.entries({
-                      'INFORMATIKA': 'bg-violet-500/10 text-violet-400',
-                      'SISTEM INFORMASI': 'bg-cyan-500/10 text-cyan-400',
-                      'MANAJEMEN': 'bg-blue-500/10 text-blue-400',
-                      'Akuntansi': 'bg-amber-500/10 text-amber-400',
-                      'Teknik Kimia': 'bg-orange-500/10 text-orange-400',
-                      'TEKNIK LOGISTIK': 'bg-rose-500/10 text-rose-400',
+                      'S1 Informatika': 'bg-violet-500/10 text-violet-400',
+                      'S1 Sistem Informasi': 'bg-cyan-500/10 text-cyan-400',
+                      'S1 Manajemen': 'bg-blue-500/10 text-blue-400',
+                      'S2 Manajemen': 'bg-indigo-500/10 text-indigo-400',
+                      'S1 Akuntansi': 'bg-amber-500/10 text-amber-400',
+                      'S1 Ekonomi Syariah': 'bg-emerald-500/10 text-emerald-400',
+                      'S1 Teknik Kimia': 'bg-orange-500/10 text-orange-400',
+                      'S1 Teknik Logistik': 'bg-rose-500/10 text-rose-400',
+                      'S1 Manajemen Rekayasa': 'bg-teal-500/10 text-teal-400',
+                      'S1 Desain Komunikasi Visual': 'bg-pink-500/10 text-pink-400',
+                      'S1 Teknologi Industri Pertanian': 'bg-lime-500/10 text-lime-400',
                     }).map(([prodi, colorClass]) => (
                       <Badge
                         key={prodi}

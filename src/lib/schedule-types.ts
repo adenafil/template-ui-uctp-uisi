@@ -31,16 +31,48 @@ export interface ScheduleData {
 
 // Color mapping for departments/prodi
 export const PRODI_COLORS: Record<string, { bg: string; border: string; text: string }> = {
+  // Manajemen variants
   'MANAJEMEN': { bg: 'bg-blue-500/10', border: 'border-l-blue-500', text: 'text-blue-400' },
+  'S1 Manajemen': { bg: 'bg-blue-500/10', border: 'border-l-blue-500', text: 'text-blue-400' },
+  'S2 Manajemen': { bg: 'bg-indigo-500/10', border: 'border-l-indigo-500', text: 'text-indigo-400' },
+  'Magister Manajemen': { bg: 'bg-indigo-500/10', border: 'border-l-indigo-500', text: 'text-indigo-400' },
+  'S2 Manajemen/Magister Manajemen': { bg: 'bg-indigo-500/10', border: 'border-l-indigo-500', text: 'text-indigo-400' },
+  
+  // Ekonomi Syariah variants
   'Ekonomi Syariah': { bg: 'bg-emerald-500/10', border: 'border-l-emerald-500', text: 'text-emerald-400' },
+  'S1 Ekonomi Syariah': { bg: 'bg-emerald-500/10', border: 'border-l-emerald-500', text: 'text-emerald-400' },
+  
+  // Akuntansi variants
   'Akuntansi': { bg: 'bg-amber-500/10', border: 'border-l-amber-500', text: 'text-amber-400' },
+  'S1 Akuntansi': { bg: 'bg-amber-500/10', border: 'border-l-amber-500', text: 'text-amber-400' },
+  
+  // Sistem Informasi variants
   'SISTEM INFORMASI': { bg: 'bg-cyan-500/10', border: 'border-l-cyan-500', text: 'text-cyan-400' },
+  'S1 Sistem Informasi': { bg: 'bg-cyan-500/10', border: 'border-l-cyan-500', text: 'text-cyan-400' },
+  
+  // Informatika variants
   'INFORMATIKA': { bg: 'bg-violet-500/10', border: 'border-l-violet-500', text: 'text-violet-400' },
+  'S1 Informatika': { bg: 'bg-violet-500/10', border: 'border-l-violet-500', text: 'text-violet-400' },
+  
+  // Teknik Logistik variants
   'TEKNIK LOGISTIK': { bg: 'bg-rose-500/10', border: 'border-l-rose-500', text: 'text-rose-400' },
+  'S1 Teknik Logistik': { bg: 'bg-rose-500/10', border: 'border-l-rose-500', text: 'text-rose-400' },
+  
+  // Teknik Kimia variants
   'Teknik Kimia': { bg: 'bg-orange-500/10', border: 'border-l-orange-500', text: 'text-orange-400' },
+  'S1 Teknik Kimia': { bg: 'bg-orange-500/10', border: 'border-l-orange-500', text: 'text-orange-400' },
+  
+  // Manajemen Rekayasa variants
   'Manajemen Rekayasa': { bg: 'bg-teal-500/10', border: 'border-l-teal-500', text: 'text-teal-400' },
+  'S1 Manajemen Rekayasa': { bg: 'bg-teal-500/10', border: 'border-l-teal-500', text: 'text-teal-400' },
+  
+  // Desain Komunikasi Visual variants
   'DESAIN KOMUNIKASI VISUAL': { bg: 'bg-pink-500/10', border: 'border-l-pink-500', text: 'text-pink-400' },
+  'S1 Desain Komunikasi Visual': { bg: 'bg-pink-500/10', border: 'border-l-pink-500', text: 'text-pink-400' },
+  
+  // Teknologi Industri Pertanian variants
   'Teknologi Industri Pertanian': { bg: 'bg-lime-500/10', border: 'border-l-lime-500', text: 'text-lime-400' },
+  'S1 Teknologi Industri Pertanian': { bg: 'bg-lime-500/10', border: 'border-l-lime-500', text: 'text-lime-400' },
 }
 
 export const getProdiColor = (prodi: string) => {
@@ -58,15 +90,17 @@ export const TIME_SLOTS = [
   { label: '12:30-13:20', start: '12:30', end: '13:20' },
   { label: '13:20-14:10', start: '13:20', end: '14:10' },
   { label: '14:10-15:00', start: '14:10', end: '15:00' },
-  { label: '15:00-15:50', start: '15:00', end: '15:50' },
-  { label: '15:50-16:40', start: '15:50', end: '16:40' },
-  { label: '16:40-17:30', start: '16:40', end: '17:30' },
-  { label: '17:30-18:20', start: '17:30', end: '18:20' },
-  { label: '18:20-19:10', start: '18:20', end: '19:10' },
-  { label: '19:10-20:00', start: '19:10', end: '20:00' },
+  { label: '15:00-15:30', start: '15:00', end: '15:30' },
+  { label: '15:30-16:20', start: '15:30', end: '16:20' },
+  { label: '16:20-17:10', start: '16:20', end: '17:10' },
+  { label: '17:10-18:00', start: '17:10', end: '18:00' },
+  { label: '18:00-18:30', start: '18:00', end: '18:30' },
+  { label: '18:30-19:20', start: '18:30', end: '19:20' },
+  { label: '19:20-20:10', start: '19:20', end: '20:10' },
+  { label: '20:10-21:00', start: '20:10', end: '21:00' },
 ]
 
-export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as const
+export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const
 
 // Helper to calculate time slot row span based on SKS
 export const calculateRowSpan = (sks: number): number => {

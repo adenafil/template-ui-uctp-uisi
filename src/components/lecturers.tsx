@@ -40,7 +40,7 @@ import {
 import { mockLecturers, mockCourses } from '@/lib/mock-data'
 import type { Lecturer, LecturerFormData } from '@/lib/types'
 
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 export default function LecturersPage() {
   const [lecturers, setLecturers] = useState<Lecturer[]>(mockLecturers)
