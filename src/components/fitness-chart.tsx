@@ -39,21 +39,21 @@ export function FitnessChart({ data }: FitnessChartProps) {
   const bestCost = lastData?.bestCost ?? 0
   
   return (
-    <Card className="bg-card">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <span>Optimization Progress</span>
-          <span className="text-sm font-normal text-muted-foreground">
-            Best Cost: {bestCost.toFixed(2)}
+    <Card className="bg-card overflow-hidden">
+      <CardHeader className="space-y-2">
+        <CardTitle className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <span className="truncate">Optimization Progress</span>
+          <span className="text-xs sm:text-sm font-normal text-muted-foreground whitespace-nowrap">
+            Best: {bestCost.toFixed(0)}
           </span>
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="h-[250px] w-full">
+      <CardContent className="px-2 sm:px-6">
+        <ChartContainer config={chartConfig} className="h-[200px] sm:h-[250px] w-full min-w-0">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={data}
-              margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+              margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
             >
               <defs>
                 <linearGradient id="fillBest" x1="0" y1="0" x2="0" y2="1">

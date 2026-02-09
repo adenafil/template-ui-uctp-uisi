@@ -23,8 +23,8 @@ export default function DashboardPage() {
           title="Dashboard"
           description="University Course Timetabling System Overview"
         />
-        <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
-          <div className="mx-auto max-w-7xl space-y-6">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-4 md:p-6 lg:p-8">
+          <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6 min-w-0">
             {/* Welcome Banner */}
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-background border border-primary/20 p-6 lg:p-8">
               <div className="relative z-10">
@@ -52,7 +52,7 @@ export default function DashboardPage() {
             </section>
 
             {/* Charts Row */}
-            <section className="grid gap-6 lg:grid-cols-2">
+            <section className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
               <FitnessChart data={mockFitnessHistory} />
               <RoomUtilizationChart data={mockRoomUtilization} />
             </section>
@@ -63,7 +63,7 @@ export default function DashboardPage() {
             </section>
 
             {/* Bottom Row */}
-            <section className="grid gap-6 lg:grid-cols-2">
+            <section className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
               <WeeklyDistributionChart data={mockWeeklyDistribution} />
               <RecentActivity />
             </section>

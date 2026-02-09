@@ -203,123 +203,121 @@ export function ScheduleGrid({ initialData, zoomLevel = 1 }: ScheduleGridProps) 
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <Card className="bg-card" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }}>
-        <CardHeader className="flex flex-row items-center justify-between ">
-          <CardTitle className="text-xl">{currentDay}</CardTitle>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigateDay('prev')}
-            >
-              <ChevronLeft className="h-5 w-5" />
-              <span className="sr-only">Previous day</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigateDay('next')}
-            >
-              <ChevronRight className="h-5 w-5" />
-              <span className="sr-only">Next day</span>
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="p-0 overflow-auto max-h-[calc(100vh-140px)]">
-          <div className="overflow-x-auto">
-            <div className="min-w-[1200px]">
-              {/* Header row with rooms */}
-              <div
-                className="grid border-b border-t "
-                style={{
-                  gridTemplateColumns: `100px repeat(${rooms.length }, minmax(140px, 1fr))`,
-                }}
+      <div className="overflow-x-auto">
+        <Card className="bg-card min-w-[1200px]" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }}>
+          <CardHeader className="flex flex-row items-center justify-between ">
+            <CardTitle className="text-xl">{currentDay}</CardTitle>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigateDay('prev')}
               >
-                <div className="sticky left-0 bg-card p-3 text-sm font-medium text-muted-foreground">
-                  Time
-                </div>
-                {rooms.map((room) => (
-                  <div
-                    key={room}
-                    className="border-l p-3 text-center text-sm font-medium"
-                  >
-                    {room}
-                  </div>
-                ))}
-              </div>
-
-              {/* Time slots */}
-              { /* @ts-ignore */}
-              {TIME_SLOTS.map((timeSlot, timeIndex) => (
+                <ChevronLeft className="h-5 w-5" />
+                <span className="sr-only">Previous day</span>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigateDay('next')}
+              >
+                <ChevronRight className="h-5 w-5" />
+                <span className="sr-only">Next day</span>
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0 overflow-auto max-h-[calc(100vh-140px)]">
+                {/* Header row with rooms */}
                 <div
-                  key={timeSlot.label}
-                  className={`grid border-b ${timeIndex === 0 ? 'border-t' : ''}`}
+                  className="grid border-b border-t "
                   style={{
-                    gridTemplateColumns: `100px repeat(${rooms.length}, minmax(140px, 1fr))`,
+                    gridTemplateColumns: `100px repeat(${rooms.length }, minmax(140px, 1fr))`,
                   }}
                 >
-                  {/* Time label */}
-                  <div className="sticky left-0 bg-card p-2 text-xs text-muted-foreground">
-                    {timeSlot.label}
+                  <div className="sticky left-0 bg-card p-3 text-sm font-medium text-muted-foreground">
+                    Time
                   </div>
-
-                  {/* Room cells */}
-                  {rooms.map((room) => {
-                    const entry = getEntryAtPosition(room, timeSlot.start)
-                    const cellOccupant = getCellOccupant(room, timeSlot.start)
-
-                    // Skip cells that are part of a multi-row entry
-                    if (cellOccupant && !entry) {
-                      const colors = getProdiColor(cellOccupant.prodi)
-                      return (
-                        <div
-                          key={`${room}-${timeSlot.start}`}
-                          className={`relative min-h-[70px] border-l p-1 ${colors.bg}`}
-                        />
-                      )
-                    }
-
-                    const rowSpan = entry
-                      ? calculateRowSpan(
-                          entry.timeSlot.startTime,
-                          entry.timeSlot.endTime
-                        )
-                      : 1
-
-                    return (
-                      <DroppableCell
-                        key={`${room}-${timeSlot.start}`}
-                        id={`${room}|${timeSlot.start}`}
-                        className="relative min-h-[70px] border-l p-1"
-                      >
-                        {entry && (
-                          <DraggableCard
-                            id={`${entry.classId}-${entry.room}-${entry.timeSlot.startTime}`}
-                            entry={entry}
-                            style={{
-                              height: `calc(${rowSpan * 70}px - 8px)`,
-                            }}
-                          >
-                            <ScheduleCard
-                              entry={entry}
-                              onEdit={handleEdit}
-                              onDelete={handleDelete}
-                              isDragging={
-                                activeEntry?.classId === entry.classId &&
-                                activeEntry?.room === entry.room
-                              }
-                            />
-                          </DraggableCard>
-                        )}
-                      </DroppableCell>
-                    )
-                  })}
+                  {rooms.map((room) => (
+                    <div
+                      key={room}
+                      className="border-l p-3 text-center text-sm font-medium"
+                    >
+                      {room}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
+                {/* Time slots */}
+                { /* @ts-ignore */}
+                {TIME_SLOTS.map((timeSlot, timeIndex) => (
+                  <div
+                    key={timeSlot.label}
+                    className={`grid border-b ${timeIndex === 0 ? 'border-t' : ''}`}
+                    style={{
+                      gridTemplateColumns: `100px repeat(${rooms.length}, minmax(140px, 1fr))`,
+                    }}
+                  >
+                    {/* Time label */}
+                    <div className="sticky left-0 bg-card p-2 text-xs text-muted-foreground">
+                      {timeSlot.label}
+                    </div>
+
+                    {/* Room cells */}
+                    {rooms.map((room) => {
+                      const entry = getEntryAtPosition(room, timeSlot.start)
+                      const cellOccupant = getCellOccupant(room, timeSlot.start)
+
+                      // Skip cells that are part of a multi-row entry
+                      if (cellOccupant && !entry) {
+                        const colors = getProdiColor(cellOccupant.prodi)
+                        return (
+                          <div
+                            key={`${room}-${timeSlot.start}`}
+                            className={`relative min-h-[70px] border-l p-1 ${colors.bg}`}
+                          />
+                        )
+                      }
+
+                      const rowSpan = entry
+                        ? calculateRowSpan(
+                            entry.timeSlot.startTime,
+                            entry.timeSlot.endTime
+                          )
+                        : 1
+
+                      return (
+                        <DroppableCell
+                          key={`${room}-${timeSlot.start}`}
+                          id={`${room}|${timeSlot.start}`}
+                          className="relative min-h-[70px] border-l p-1"
+                        >
+                          {entry && (
+                            <DraggableCard
+                              id={`${entry.classId}-${entry.room}-${entry.timeSlot.startTime}`}
+                              entry={entry}
+                              style={{
+                                height: `calc(${rowSpan * 70}px - 8px)`,
+                              }}
+                            >
+                              <ScheduleCard
+                                entry={entry}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                                isDragging={
+                                  activeEntry?.classId === entry.classId &&
+                                  activeEntry?.room === entry.room
+                                }
+                              />
+                            </DraggableCard>
+                          )}
+                        </DroppableCell>
+                      )
+                    })}
+                  </div>
+                ))}
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Drag overlay */}
       <DragOverlay>

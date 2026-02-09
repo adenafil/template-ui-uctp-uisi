@@ -152,13 +152,13 @@ export function SchedulePreview() {
 
   return (
     <Card className="bg-card">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center gap-4">
+      <CardHeader className="flex flex-col gap-4 pb-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <CardTitle>Jadwal Preview</CardTitle>
           
           {/* Class Selector */}
           <Select value={selectedClass} onValueChange={setSelectedClass}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Pilih Kelas" />
             </SelectTrigger>
             <SelectContent>
@@ -171,7 +171,7 @@ export function SchedulePreview() {
           </Select>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2 sm:justify-end">
           {/* View Mode Toggle */}
           <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as ViewMode)}>
             <TabsList className="h-8">
@@ -196,8 +196,8 @@ export function SchedulePreview() {
       <CardContent>
         {viewMode === 'grid' ? (
           /* Grid View */
-          <div className="overflow-x-auto">
-            <div className="min-w-[700px]">
+          <div className="overflow-x-auto -mx-4 px-4 sm:-mx-6 sm:px-6">
+            <div className="min-w-[600px] sm:min-w-[700px]">
               <div className="grid grid-cols-7 gap-1">
                 {/* Header */}
                 <div className="p-2 text-xs font-medium text-muted-foreground">Jam</div>

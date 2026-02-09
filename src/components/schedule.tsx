@@ -52,13 +52,13 @@ export default function SchedulePage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-background">
+      <SidebarInset className="bg-background min-w-0">
         <DashboardHeader
           title="Schedule"
           description="Drag and drop to reschedule courses"
         />
-        <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
-          <div className="mx-auto max-w-full space-y-6">
+        <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 min-w-0">
+          <div className="mx-auto w-full max-w-full space-y-6">
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -97,9 +97,9 @@ export default function SchedulePage() {
             </Card>
 
             {/* Schedule Grid */}
-            <div 
-              ref={timetableRef} 
-              className={`relative ${isFullscreen ? 'h-screen w-screen overflow-auto bg-background p-6' : ''}`}
+            <div
+              ref={timetableRef}
+              className={`relative isolate w-full ${isFullscreen ? 'h-screen overflow-auto bg-background p-6' : ''}`}
             >
               <Card className={`border-border/60 shadow-sm ${isFullscreen ? 'min-h-full' : ''}`}>
                 <CardHeader className="pb-4">

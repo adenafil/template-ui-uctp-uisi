@@ -29,41 +29,41 @@ const chartConfig = {
 
 export function WeeklyDistributionChart({ data }: WeeklyDistributionChartProps) {
   return (
-    <Card className="bg-card">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <span>Weekly Distribution</span>
-          <div className="flex items-center gap-4 text-sm font-normal">
-            <span className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-full bg-chart-1" />
+    <Card className="bg-card overflow-hidden">
+      <CardHeader className="space-y-2">
+        <CardTitle className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <span className="truncate">Weekly Distribution</span>
+          <div className="flex items-center gap-2 text-[10px] sm:gap-4 sm:text-sm font-normal shrink-0">
+            <span className="flex items-center gap-1 sm:gap-1.5">
+              <span className="size-2 sm:size-2.5 rounded-full bg-chart-1" />
               <span className="text-muted-foreground">Sessions</span>
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-full bg-chart-2" />
+            <span className="flex items-center gap-1 sm:gap-1.5">
+              <span className="size-2 sm:size-2.5 rounded-full bg-chart-2" />
               <span className="text-muted-foreground">Hours</span>
             </span>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="h-[250px] w-full">
+      <CardContent className="px-2 sm:px-6">
+        <ChartContainer config={chartConfig} className="h-[200px] sm:h-[250px] w-full min-w-0">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
-              margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+              margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
             >
               <XAxis
                 dataKey="day"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
-                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}
+                tickMargin={4}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 10 }}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
-                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}
+                tickMargin={4}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 10 }}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Bar

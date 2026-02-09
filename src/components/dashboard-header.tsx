@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useTheme } from './theme-provider'
 import { CommandPalette, CommandPaletteTrigger, useCommandPalette } from './command-palette'
+import { RecentActivity } from './recent-activity'
+import { Badge } from '@/components/ui/badge'
 
 interface DashboardHeaderProps {
   title: string
@@ -24,24 +26,37 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
   const { open, setOpen } = useCommandPalette()
 
   return (
-    <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 flex min-h-14 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-4 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="mr-2 h-4" />
       <div className="flex flex-1 items-center gap-4">
         <div>
           <h1 className="text-lg font-semibold leading-none">{title}</h1>
           {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm text-muted-foreground line-clamp-1">{description}</p>
           )}
         </div>
       </div>
       <div className="flex items-center gap-2">
         <CommandPaletteTrigger onClick={() => setOpen(true)} />
         <CommandPalette open={open} onOpenChange={setOpen} />
-        <Button variant="ghost" size="icon" className="size-9">
-          <Bell className="size-4" />
-          <span className="sr-only">Notifications</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="relative size-9">
+              <Bell className="size-4" />
+              <Badge variant="destructive" className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center p-0 text-[10px]">
+                6
+              </Badge>
+              <span className="sr-only">Notifications</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-80">
+            <div className="border-b px-3 py-2">
+              <p className="text-sm font-semibold">Recent Activity</p>
+            </div>
+            <RecentActivity variant="dropdown" maxItems={5} />
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="size-9">
