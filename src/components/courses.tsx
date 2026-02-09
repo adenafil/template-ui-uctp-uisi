@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Search, BookOpen, Pencil, Trash2, X, Users, GraduationCap } from 'lucide-react'
+import { Plus, Search, BookOpen, Pencil, Trash2, X, Users, GraduationCap, Upload, Download } from 'lucide-react'
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/app-sidebar'
 import { DashboardHeader } from '@/components/dashboard-header'
@@ -20,14 +20,6 @@ import {
   SheetClose,
 } from '@/components/ui/sheet'
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -38,13 +30,33 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { DataTable, type DataTableColumn } from '@/components/ui/data-table'
+import { ExcelImportDialog } from '@/components/excel-import-dialog'
 import { mockCourses, mockLecturers } from '@/lib/mock-data'
 import type { Course, CourseFormData } from '@/lib/types'
+
+const courseRequiredFields = [
+  { name: 'prodi', description: 'Program studi', example: 'Informatika' },
+  { name: 'kelas', description: 'Class name', example: 'IF-3A' },
+  { name: 'kodeMatakuliah', description: 'Course code', example: 'IF13KA14' },
+  { name: 'mataKuliah', description: 'Course name', example: 'Kalkulus' },
+  { name: 'sks', description: 'Credits', example: '3' },
+  { name: 'jenis', description: 'Type (wajib/pilihan)', example: 'wajib' },
+  { name: 'peserta', description: 'Number of students', example: '35' },
+  { name: 'kodeDosen1', description: 'Primary lecturer code', example: 'NGT' },
+  { name: 'kodeDosen2', description: 'Secondary lecturer code', example: 'PAY' },
+  { name: 'kodeDosenProdiLain1', description: 'External lecturer 1', example: '' },
+  { name: 'kodeDosenProdiLain2', description: 'External lecturer 2', example: '' },
+  { name: 'classType', description: 'Class type (pagi/sore)', example: 'pagi' },
+  { name: 'shouldOnTheLab', description: 'Should be in lab (yes/no)', example: 'yes' },
+  { name: 'rooms', description: 'Preferred rooms (comma separated)', example: 'CM-101, CM-102' },
+]
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>(mockCourses)
   const [searchQuery, setSearchQuery] = useState('')
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false)
   const [editingCourse, setEditingCourse] = useState<Course | null>(null)
   const [formData, setFormData] = useState<CourseFormData>({
     prodi: '',
@@ -69,6 +81,112 @@ export default function CoursesPage() {
       course.kodeMatakuliah.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.kelas.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  const courseColumns: DataTableColumn<Course>[] = [
+    {
+      key: 'kodeMatakuliah',
+      header: 'Code',
+      cell: (course) => (
+        <Badge
+          variant="outline"
+          className="font-mono font-semibold text-primary border-primary/30 bg-primary/5"
+        >
+          {course.kodeMatakuliah}
+        </Badge>
+      ),
+    },
+    {
+      key: 'mataKuliah',
+      header: 'Course Name',
+      cell: (course) => (
+        <div>
+          <div className="font-medium text-foreground">{course.mataKuliah}</div>
+          <div className="flex gap-1 mt-1">
+            {course.shouldOnTheLab && (
+              <Badge variant="outline" className="text-xs bg-chart-2/10 text-chart-2 border-chart-2/30">
+                Should be in the lab
+              </Badge>
+            )}
+            <Badge variant="outline" className="text-xs capitalize">
+              {course.jenis}
+            </Badge>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: 'prodi',
+      header: 'Program Studi',
+      cell: (course) => <span className="text-sm text-muted-foreground">{course.prodi}</span>,
+    },
+    {
+      key: 'kelas',
+      header: 'Class',
+      cell: (course) => (
+        <div>
+          <Badge variant="secondary" className="font-normal bg-secondary/60">
+            {course.kelas}
+          </Badge>
+          <div className="text-xs text-muted-foreground mt-1 capitalize">
+            {course.classType}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: 'sks',
+      header: 'SKS',
+      cell: (course) => (
+        <div className="flex items-center gap-1">
+          <GraduationCap className="size-3.5 text-muted-foreground" />
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2">
+            {course.sks} SKS
+          </span>
+        </div>
+      ),
+    },
+    {
+      key: 'peserta',
+      header: 'Students',
+      cell: (course) => (
+        <div className="flex items-center gap-1">
+          <Users className="size-3.5 text-muted-foreground" />
+          <span className="text-sm">{course.peserta}</span>
+        </div>
+      ),
+    },
+    {
+      key: 'lecturers',
+      header: 'Lecturers',
+      cell: (course) => {
+        const lecturers = [
+          course.kodeDosen1,
+          course.kodeDosen2,
+          course.kodeDosenProdiLain1,
+          course.kodeDosenProdiLain2,
+        ].filter(Boolean)
+
+        return (
+          <div className="flex flex-wrap gap-1">
+            {lecturers.length > 0 ? (
+              lecturers.map((code, idx) => (
+                <Badge
+                  key={idx}
+                  variant="outline"
+                  className="text-xs font-medium border-chart-2/30 text-chart-2 bg-chart-2/5"
+                  title={getLecturerName(code) || code}
+                >
+                  {code}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-sm text-muted-foreground italic">No lecturer</span>
+            )}
+          </div>
+        )
+      },
+    },
+  ]
 
   const handleAdd = () => {
     setEditingCourse(null)
@@ -116,6 +234,10 @@ export default function CoursesPage() {
     setCourses(courses.filter((c) => c.id !== courseId))
   }
 
+  const handleBulkDelete = (ids: string[]) => {
+    setCourses(courses.filter((c) => !ids.includes(c.id)))
+  }
+
   const handleSubmit = () => {
     if (editingCourse) {
       setCourses(
@@ -144,6 +266,22 @@ export default function CoursesPage() {
 
   const isFormValid = formData.kodeMatakuliah && formData.mataKuliah && formData.kelas && formData.prodi
 
+  const handleImport = (file: File, overwrite: boolean) => {
+    // TODO: Implement API call to import courses from Excel
+    console.log('Importing courses from:', file.name, 'Overwrite:', overwrite)
+    setIsImportDialogOpen(false)
+  }
+
+  const handleDownloadTemplate = () => {
+    // TODO: Implement API call to download template
+    console.log('Downloading courses template')
+  }
+
+  const handleExport = () => {
+    // TODO: Implement API call to export courses to Excel
+    console.log('Exporting courses to Excel')
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -166,13 +304,31 @@ export default function CoursesPage() {
                 </div>
               </div>
               
-              <Button 
-                onClick={handleAdd}
-                className="bg-gradient-to-r from-primary to-primary/90 hover:opacity-90 shadow-lg shadow-primary/20"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Add Course
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline"
+                  onClick={() => setIsImportDialogOpen(true)}
+                  className="border-primary/30 text-primary"
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  Import
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={handleExport}
+                  className="border-chart-4/30 text-chart-4 "
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Export
+                </Button>
+                <Button 
+                  onClick={handleAdd}
+                  className="bg-gradient-to-r from-primary to-primary/90 hover:opacity-90 shadow-lg shadow-primary/20"
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Course
+                </Button>
+              </div>
             </div>
 
             {/* Main Card */}
@@ -194,154 +350,54 @@ export default function CoursesPage() {
               </CardHeader>
               
               <CardContent className="pt-0">
-                <div className="rounded-xl border border-border/60 overflow-hidden">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-muted/50 hover:bg-muted/50">
-                        <TableHead className="font-semibold text-foreground">Code</TableHead>
-                        <TableHead className="font-semibold text-foreground">Course Name</TableHead>
-                        <TableHead className="font-semibold text-foreground">Program Studi</TableHead>
-                        <TableHead className="font-semibold text-foreground">Class</TableHead>
-                        <TableHead className="font-semibold text-foreground">SKS</TableHead>
-                        <TableHead className="font-semibold text-foreground">Students</TableHead>
-                        <TableHead className="font-semibold text-foreground">Lecturers</TableHead>
-                        <TableHead className="font-semibold text-foreground text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredCourses.length === 0 ? (
-                        <TableRow>
-                          <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                            No courses found
-                          </TableCell>
-                        </TableRow>
-                      ) : (
-                        filteredCourses.map((course) => {
-                          const lecturers = [
-                            course.kodeDosen1,
-                            course.kodeDosen2,
-                            course.kodeDosenProdiLain1,
-                            course.kodeDosenProdiLain2,
-                          ].filter(Boolean)
-
-                          return (
-                            <TableRow
-                              key={course.id}
-                              className="group border-border/50 hover:bg-muted/30 transition-colors duration-200"
+                <DataTable
+                  data={filteredCourses}
+                  columns={courseColumns}
+                  onDeleteItems={handleBulkDelete}
+                  defaultRowsPerPage={25}
+                  rowActions={(course) => (
+                    <>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleEdit(course)}
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Course</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete <strong>{course.mataKuliah}</strong>? 
+                              This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(course.id)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             >
-                              <TableCell>
-                                <Badge
-                                  variant="outline"
-                                  className="font-mono font-semibold text-primary border-primary/30 bg-primary/5"
-                                >
-                                  {course.kodeMatakuliah}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                <div className="font-medium text-foreground">{course.mataKuliah}</div>
-                                <div className="flex gap-1 mt-1">
-                                  {course.shouldOnTheLab && (
-                                    <Badge variant="outline" className="text-xs bg-chart-2/10 text-chart-2 border-chart-2/30">
-Should be in the lab
-                                    </Badge>
-                                  )}
-                                  <Badge variant="outline" className="text-xs capitalize">
-                                    {course.jenis}
-                                  </Badge>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <span className="text-sm text-muted-foreground">{course.prodi}</span>
-                              </TableCell>
-                              <TableCell>
-                                <Badge variant="secondary" className="font-normal bg-secondary/60">
-                                  {course.kelas}
-                                </Badge>
-                                <div className="text-xs text-muted-foreground mt-1 capitalize">
-                                  {course.classType}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex items-center gap-1">
-                                  <GraduationCap className="size-3.5 text-muted-foreground" />
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-chart-2/10 text-chart-2">
-                                    {course.sks} SKS
-                                  </span>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex items-center gap-1">
-                                  <Users className="size-3.5 text-muted-foreground" />
-                                  <span className="text-sm">{course.peserta}</span>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex flex-wrap gap-1">
-                                  {lecturers.length > 0 ? (
-                                    lecturers.map((code, idx) => (
-                                      <Badge
-                                        key={idx}
-                                        variant="outline"
-                                        className="text-xs font-medium border-chart-2/30 text-chart-2 bg-chart-2/5"
-                                        title={getLecturerName(code) || code}
-                                      >
-                                        {code}
-                                      </Badge>
-                                    ))
-                                  ) : (
-                                    <span className="text-sm text-muted-foreground italic">No lecturer</span>
-                                  )}
-                                </div>
-                              </TableCell>
-                              <TableCell className="text-right">
-                                <div className="flex items-center justify-end gap-2">
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => handleEdit(course)}
-                                    className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                                  >
-                                    <Pencil className="h-4 w-4" />
-                                  </Button>
-                                  
-                                  <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                      <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                                      >
-                                        <Trash2 className="h-4 w-4" />
-                                      </Button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                      <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete Course</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                          Are you sure you want to delete <strong>{course.mataKuliah}</strong>? 
-                                          This action cannot be undone.
-                                        </AlertDialogDescription>
-                                      </AlertDialogHeader>
-                                      <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction
-                                          onClick={() => handleDelete(course.id)}
-                                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                        >
-                                          Delete
-                                        </AlertDialogAction>
-                                      </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                  </AlertDialog>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </>
+                  )}
+                />
               </CardContent>
             </Card>
           </div>
@@ -609,6 +665,18 @@ Should be in the lab
             </SheetFooter>
           </SheetContent>
         </Sheet>
+
+        {/* Import Excel Dialog */}
+        <ExcelImportDialog
+          isOpen={isImportDialogOpen}
+          onOpenChange={setIsImportDialogOpen}
+          title="Import Courses from Excel"
+          description="Import course data from an Excel file. Make sure your file includes all required fields."
+          requiredFields={courseRequiredFields}
+          sheetName="Courses"
+          onImport={handleImport}
+          onDownloadTemplate={handleDownloadTemplate}
+        />
       </SidebarInset>
     </SidebarProvider>
   )
